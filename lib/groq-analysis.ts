@@ -85,7 +85,7 @@ EXAMPLES:
 If JD requires: "Python programming, React development, AWS cloud services, 5+ years of software development experience, Bachelor's degree in Computer Science"
 And Resume has: "Python, JavaScript, React, 3 years experience, Master's degree"
 Then:
-- matched_skills: ["Python", "React", "Bachelor's degree"]  
+- matched_skills: ["Python", "React"]  
 - missing_skills: ["AWS", "5+ years experience"]
 
 SKILL CONDENSING EXAMPLES:

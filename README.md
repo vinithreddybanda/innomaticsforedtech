@@ -49,7 +49,7 @@ We developed an AI-powered automated resume evaluation system that transforms th
 - **Frontend**: Next.js 14.2.32 with React 18 and TypeScript
 - **Backend**: Next.js API Routes with server-side processing
 - **Database**: Supabase (PostgreSQL) with real-time capabilities  
-- **AI Engine**: Groq AI with Llama-3.3-70B-Versatile model
+- **AI Engine**: Groq AI with Llama-3.3-70B-Versatile model better results compared to gemma2-9b-it
 - **Document Processing**: office-text-extractor for multi-format support
 - **Visualization**: ag-charts-react for interactive charts
 - **Styling**: Tailwind CSS with Shadcn/ui component library
@@ -362,14 +362,12 @@ We welcome contributions to improve the system! Here's how to get started:
 - Add error handling for new features
 - Update documentation for significant changes
 
-## 📄 License
 
-This project is developed for Innomatics Research Labs internal use. All rights reserved.
 
 ## 📞 Support
 
 For technical support or questions:
-- **Internal Support**: Contact the development team
+
 - **Documentation**: Refer to inline code comments
 - **Issues**: Use the project's issue tracking system
 
@@ -378,5 +376,3 @@ For technical support or questions:
 **System Status**: ✅ Production Ready  
 **Version**: 1.0.0  
 **Last Updated**: September 21, 2025
-
-**Built with ❤️ for Innomatics Research Labs**
