@@ -25,88 +25,46 @@ export async function analyzeResumeWithGroq(resumeText: string, jdText: string):
 
   try {
     const prompt = `
-You are an expert ATS (Applicant Tracking System) and HR analyst with 10+ years of experience in talent acquisition. 
+You are an ATS system. Compare this resume to the job requirements and score the match.
 
-Analyze the following resume against the job description with high precision and provide a comprehensive assessment.
-
-JOB DESCRIPTION:
+JOB REQUIREMENTS:
 ${jdText.trim()}
 
 CANDIDATE RESUME:
 ${resumeText.trim()}
 
-ANALYSIS INSTRUCTIONS:
-1. Extract ALL skills, qualifications and requirements mentioned in the JOB DESCRIPTION
-2. For each JD requirement, check if the candidate's resume demonstrates that skill/qualification
-3. Consider both exact keyword matches and semantic/contextual matches
-4. Evaluate experience level, education, certifications, and relevant projects
-5. Consider career progression and relevance of past roles
+Instructions:
+1. Score from 0-100 based on how well the resume matches the job requirements
+2. List skills from the job that the candidate HAS (matched_skills)  
+3. List skills from the job that the candidate LACKS (missing_skills)
+4. Keep skills short (2-3 words max)
 
-SKILL MATCHING RULES:
-- "matched_skills": JD skills/requirements that ARE demonstrated in the candidate's resume
-- "missing_skills": JD skills/requirements that are NOT found or demonstrated in the candidate's resume
+Scoring:
+- 90-100: Exceptional match (High)
+- 70-89: Good match (Medium)  
+- 0-69: Poor match (Low)
 
-IMPORTANT CLARIFICATION:
-- Focus ONLY on what the JOB DESCRIPTION requires
-- Do NOT include skills from resume that aren't in the JD
-- Match skills semantically (e.g., "JavaScript" matches "JS", "Machine Learning" matches "ML")
-
-SKILL FORMATTING RULES:
-- Keep each skill to MAXIMUM 3-4 words only
-- Use concise, specific terms or actual missed skills
-- Avoid long descriptive phrases
-- Examples of BAD skills: "Experience in working on interfaces for processing large amounts of data", "Understanding of manufacturing data and processes"
-
-Provide ONLY a valid JSON response with this exact structure:
+Return ONLY this JSON format:
 {
-  "score": <number between 0-100 representing overall match percentage>,
+  "score": <number 0-100>,
   "verdict": "<High/Medium/Low>",
-  "matched_skills": ["JD_skill1_found_in_resume", "JD_skill2_found_in_resume"],
-  "missing_skills": ["JD_skill1_NOT_in_resume", "JD_skill2_NOT_in_resume"]
+  "matched_skills": ["skill1", "skill2"],
+  "missing_skills": ["skill3", "skill4"]
 }
-
-CRITICAL: The "verdict" field must be EXACTLY one of these three words: "High", "Medium", "Low"
-Do NOT use any other words like "Moderate", "Good", "Poor", "Excellent", etc.
-
-SCORING CRITERIA:
-- 90-100: Perfect match, candidate has 90%+ of JD requirements
-- 80-89: Excellent match, candidate has 80-89% of JD requirements  
-- 70-79: Good match, candidate has 70-79% of JD requirements
-- 60-69: Moderate match, candidate has 60-69% of JD requirements
-- 50-59: Weak match, candidate has 50-59% of JD requirements
-- 0-49: Poor match, candidate has less than 50% of JD requirements
-
-VERDICT MAPPING:
-- High: Score 80-100 (Strong candidate, recommend for interview)
-- Medium: Score 50-79 (Potential candidate, needs further review)  
-- Low: Score 0-49 (Not suitable for this role)
-
-EXAMPLES:
-If JD requires: "Python programming, React development, AWS cloud services, 5+ years of software development experience, Bachelor's degree in Computer Science"
-And Resume has: "Python, JavaScript, React, 3 years experience, Master's degree"
-Then:
-- matched_skills: ["Python", "React", "Bachelor's degree"]  
-- missing_skills: ["AWS", "5+ years experience"]
-
-SKILL CONDENSING EXAMPLES:
-- "Experience in working on interfaces for processing large amounts of data" → "Data processing"
-- "Bachelor's degree in Mechanical/Automotive/Production/Manufacturing engineering" → "Engineering degree"
-- "At least one year of experience in a manufacturing company" → "Manufacturing experience"
-- "Understanding of manufacturing data" → "Manufacturing data"
-- "Collaboration with stakeholders including machine learning engineers" → "Stakeholder collaboration"
-
-IMPORTANT: Return ONLY the JSON object, no additional text, markdown formatting, or explanations.
 `
 
     console.log("[Innomatics Research Labs] Starting Groq analysis...")
+    console.log("[Innomatics Research Labs] Resume text length:", resumeText.length)
+    console.log("[Innomatics Research Labs] JD text length:", jdText.length)
     
     const { text } = await generateText({
-      model: groq("gemma2-9b-it"),
+      model: groq("llama-3.1-8b-instant"),
       prompt,
-      temperature: 0.3, // Lower temperature for more consistent results
+      temperature: 0.1, // Very low temperature for more consistent results
     })
 
-    console.log("[Innomatics Research Labs] Groq response received, parsing...")
+    console.log("[Innomatics Research Labs] Groq response received:", text.substring(0, 200) + "...")
+    console.log("[Innomatics Research Labs] Parsing response...")
 
     // Clean and parse the JSON response
     let cleanedText = text.trim()
@@ -168,7 +126,8 @@ IMPORTANT: Return ONLY the JSON object, no additional text, markdown formatting,
       score: result.score,
       verdict: result.verdict,
       matchedSkillsCount: result.matched_skills.length,
-      missingSkillsCount: result.missing_skills.length
+      missingSkillsCount: result.missing_skills.length,
+      rawScore: analysis.score
     })
 
     return result
