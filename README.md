@@ -25,7 +25,7 @@ We developed an AI-powered automated resume evaluation system that transforms th
 ### Key Innovation Areas
 
 #### 1. **Intelligent Document Processing**
-- **Multi-format Support**: Processes PDF, DOCX, PPTX, and XLSX files
+- **Multi-format Support**: Processes PDF, DOCX
 - **Advanced Text Extraction**: Uses `office-text-extractor` library for accurate content parsing
 - **Server-side Processing**: Handles large files efficiently without client-side limitations
 
@@ -169,7 +169,7 @@ The application will be available at `http://localhost:3000`
 - Click "Apply Now" on your desired position
 - Enter your full name in the application form
 - Upload your resume using the drag-and-drop interface
-- Supported formats: PDF, DOCX, PPTX, XLSX (max 10MB)
+- Supported formats: PDF, DOCX (max 10MB)
 
 #### 3. **Get Instant Analysis**
 - After submission, the AI analysis begins automatically
@@ -306,7 +306,7 @@ Get-ChildItem Env:GROQ_API_KEY  # Windows PowerShell
 
 #### File Upload Failures
 - Verify file size is under 10MB limit
-- Ensure file format is supported (PDF, DOCX, PPTX, XLSX)
+- Ensure file format is supported (PDF, DOCX)
 - Check browser console for detailed error messages
 
 #### Database Connection Issues
@@ -320,8 +320,6 @@ console.log('Connection test:', error ? 'Failed' : 'Success')
 
 #### Charts Not Rendering
 ```bash
-# Reinstall chart dependencies
-npm uninstall ag-charts-react
 npm install ag-charts-react@latest
 npm run dev
 ```
@@ -366,7 +364,8 @@ We welcome contributions to improve the system! Here's how to get started:
 
 ## 📞 Support
 
-For technical support or questions:
+For technical support or questions: [contact](mailto:vinithreddybanda@gmail.com)
+
 
 - **Documentation**: Refer to inline code comments
 - **Issues**: Use the project's issue tracking system
